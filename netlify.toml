@@ -1,6 +1,7 @@
 # Build settings
 [build]
-  publish = "./"
+  publish = "/"
+  command = "#"
 
 # Asset optimization
 [build.processing]
@@ -11,6 +12,8 @@
 [build.processing.js]
   bundle = true
   minify = true
+[build.processing.html]
+  pretty_urls = true
 [build.processing.images]
   compress = true
 
@@ -18,30 +21,28 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # Enable HSTS
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     # Prevent clickjacking
     X-Frame-Options = "DENY"
     # XSS protection
+    X-XSS-Protection = "1; mode=block"
+    # Content type options
     X-Content-Type-Options = "nosniff"
     # Referrer policy
     Referrer-Policy = "strict-origin-when-cross-origin"
     # Content Security Policy
-    Content-Security-Policy = "default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https:;"
-    # Permissions Policy
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self' https: 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src 'self' https:; img-src 'self' https: data: blob:; font-src 'self' https: data:;"
 
-# Force HTTPS
+# Force HTTPS and redirect to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[redirects]]
   from = "http://*"
   to = "https://:splat"
   status = 301
   force = true
-
-[[redirects]]
-  from = "/home"
-  to = "/"
-  status = 301
 
 # Plugin configuration
 [[plugins]]
